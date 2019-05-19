@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Friendship;
+import com.example.demo.model.Meet;
 import com.example.demo.model.User;
 import com.example.demo.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -26,15 +28,32 @@ public class UserController {
         return new ResponseEntity<User>(userServiceImpl.createUser(user), HttpStatus.OK);
     }
 
+    @GetMapping(path = {"/"})
+    public Meet getBook() {
+        log.info("HELLO WORDL");
+        return null;
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<User> editUser(@RequestBody User user) {
+        log.info("EDIT");
+        return new ResponseEntity<User>(userServiceImpl.createUser(user), HttpStatus.OK);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<User> deleteUser(@RequestParam("email") String  email) {
+        log.info("DELETE");
+        return new ResponseEntity<User>(userServiceImpl.deleteUser(email), HttpStatus.OK);
+    }
 
     @PostMapping("/addFriend")
-    public ResponseEntity<User> getUser(@RequestParam("owner") Long ownerId, @RequestParam("friend") Long friendId) {
-        return new ResponseEntity<User>(userServiceImpl.createLinkWithFriends(ownerId, friendId), HttpStatus.OK);
+    public ResponseEntity<Friendship> getUser(@RequestParam("owner") Long ownerId, @RequestParam("friend") Long friendId) {
+        return new ResponseEntity<Friendship>(userServiceImpl.createLinkWithFriends(ownerId, friendId), HttpStatus.OK);
     }
 
     @GetMapping("/owner/{id}/friends")
-    public ResponseEntity<List<User>> getFriendsOf(@PathVariable("id") Long ownerId) {
-        return new ResponseEntity<List<User>>(userServiceImpl.getFriendsOf(ownerId), HttpStatus.OK);
+    public ResponseEntity<Set<User>> getFriendsOf(@PathVariable("id") Long ownerId) {
+        return new ResponseEntity<Set<User>>(userServiceImpl.getFriendsOf(ownerId), HttpStatus.OK);
     }
 
     @GetMapping("/getUsers")
@@ -42,11 +61,4 @@ public class UserController {
         log.info("getUser");
         return new ResponseEntity<>(userServiceImpl.getUsers(), HttpStatus.OK);
     }
-
-    @GetMapping("/showFriends/{id}")
-    public ResponseEntity<List<User>> getUsers(@PathVariable("id")  int id) {
-        log.info("showFriends"+id);
-        return new ResponseEntity<>(userServiceImpl.getUsers(), HttpStatus.OK);
-    }
-
 }

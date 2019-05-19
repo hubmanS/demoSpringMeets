@@ -1,20 +1,18 @@
 package com.example.demo.model;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "User")
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -3009157732242241606L;
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -24,34 +22,43 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
+    @Column(unique = true, name = "email")
     private String email;
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="owner")
-    @JsonBackReference
-    private Set<Friendship> friends = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name="rol")
+    Rol rol;
+
+//    @ManyToOne
+//    @JoinColumn(name="user")
+//    @JsonManagedReference
+//    @ManyToOne( fetch = FetchType.EAGER )
+//    @JoinColumn(name="mission")
+//    @JsonBackReference
+//    Meet mission;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "life")
+    Life life;
 
     public User() {
 
     }
 
-    public User(String name, long id, String password, String email) {
-        this.email = email;
-        this.name = name;
-        this.id = id;
-        this.password = password;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void addFriend(Friendship userFriend){
-        this.friends.add(userFriend);
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
-    public Set<Friendship> getFriends() {
-        return friends;
+    public Life getLife() {
+        return life;
     }
 
-    public void setFriends(Set<Friendship> friends) {
-        this.friends = friends;
+    public void setLife(Life life) {
+        this.life = life;
     }
 
     public String getEmail() {
@@ -91,4 +98,4 @@ public class User implements Serializable {
     }
 
 
-}
+    }

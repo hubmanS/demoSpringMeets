@@ -5,14 +5,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name = "Friendship")
 @Table(name = "Friendship")
 public class Friendship implements Serializable {
 
-    private static final long serialVersionUID = -3009157732242241606L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_friend;
 
     @ManyToOne
@@ -25,15 +23,6 @@ public class Friendship implements Serializable {
     private User friend;
 
     public Friendship() {
-
-    }
-
-    public long getId_friend() {
-        return id_friend;
-    }
-
-    public void setId_friend(long id_friend) {
-        this.id_friend = id_friend;
     }
 
     public User getOwner() {
